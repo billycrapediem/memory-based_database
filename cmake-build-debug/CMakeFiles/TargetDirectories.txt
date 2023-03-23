@@ -1,0 +1,3 @@
+/Users/bryanzhang/CLionProjects/CSC173_project4/cmake-build-debug/CMakeFiles/CSC173_project4.dir
+/Users/bryanzhang/CLionProjects/CSC173_project4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/bryanzhang/CLionProjects/CSC173_project4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
