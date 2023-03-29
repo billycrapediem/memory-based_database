@@ -6,34 +6,16 @@
 #include "string.h"
 #include "stdbool.h"
 #include "stdio.h"
-struct Tuple{
-    char** elements;
-};
 
-struct Node{
-    Tuples element;
-    Nodes* next;
-};
-
-struct HashTable{
-    Nodes* array;
-    int size;
-};
-struct Relation{
-    int size;
-    char** name;
-    HashTables* hashTables;
-    int tupleNum;
-};
-
-Tuples new_Tuple(){
+Tuples new_Tuple(int size ){
     Tuples new = (Tuples) malloc(sizeof(struct Tuple));
-    new->elements = NULL;
+    new->elements = (char**) calloc(size, sizeof(char*));
     return new;
 }
 
 
 void free_Tuple(Tuples x){
+    free(x->elements);
     free(x);
 }
 
@@ -83,8 +65,10 @@ int getNum(char* string){
     return num;
 }
 
-void set_Tuple(char* x[], Tuples t){
-    t->elements = x;
+void set_Tuple(char* x[], Tuples t,int size){
+    for(int i = 0; i < size; i++){
+        t->elements[i] = x[i];
+    }
 }
 
 // adding the node into hashtables
@@ -106,7 +90,10 @@ void add_Node(Nodes node, int pos, HashTables hashTables){
 Relations new_Relation(int size, char* name[]){
     Relations new = (Relations) malloc((sizeof(struct Relation)));
     new->size = size;
-    new->name = name;
+    new->name = (char**) calloc(size, sizeof(char*));
+    for(int i = 0; i < size; i++){
+        new->name[i] = name[i];
+    }
     new->hashTables = (HashTables*) calloc(size, sizeof(HashTables));
     for(int i = 0; i < size; i ++){
         new->hashTables[i] = new_HashTable(99);
@@ -121,6 +108,7 @@ void free_Relations(Relations x){
         free_HashTables(x->hashTables[i],i);
     }
     free(x->hashTables);
+    free(x->name);
     free(x);
 }
 
@@ -128,8 +116,8 @@ void free_Relations(Relations x){
 void add(char* elements[], Relations relations){
     Nodes search = lookup(elements,relations);
     if( search == NULL){
-        Tuples new = new_Tuple();
-        set_Tuple(elements,new);
+        Tuples new = new_Tuple(relations->size);
+        set_Tuple(elements,new,relations->size);
         Nodes node = new_Node(relations->size);
         node->element = new;
         for(int i = 0; i < relations->size; i++){
@@ -140,6 +128,7 @@ void add(char* elements[], Relations relations){
     }
     // free the memories of finding Nodes's memory
     else{
+        print_Relation(relations);
         while(search != NULL){
             Nodes curNode = search;
             search = curNode->next[0];
@@ -152,7 +141,7 @@ bool isSameTuple(Tuples x, Tuples y, int size){
     for(int i = 0; i < size ; i++){
         char* strX = x->elements[i];
         char* strY = y->elements[i];
-        if(strX != strY){ return false;}
+        if(strcmp(strX,strY)!=0){ return false;}
     }
     return true;
 }
@@ -161,7 +150,10 @@ bool isSameTuple(Tuples x, Tuples y, int size){
 void delete(char* elements[], Relations relations){
     Nodes container = lookup(elements,relations);
     // using lookup function we get a list of tuples that fits our requirement, and delete them in teh fucntion
-    if( container == NULL) return;
+    if( container == NULL){
+        print_Relation(relations);
+        return;
+    }
     while(container != NULL){
         Nodes curNode = container;
         Tuples curT = curNode->element;
@@ -233,7 +225,6 @@ Nodes lookup(char* elements[], Relations relations){
         return cur;
     }
     else{
-
         Nodes curNode = ans;
         HashTables tables = relations->hashTables[start];
         int pos = getNum(elements[start]);
@@ -247,7 +238,7 @@ Nodes lookup(char* elements[], Relations relations){
                 if(strlen(elements[i]) != 0){
                     char* x = elements[i];
                     char* y = t->elements[i];
-                    if(x != y){
+                    if(strcmp(x,y) != 0){
                         flag = false;
                         break;
                     }
@@ -273,7 +264,8 @@ Nodes lookup(char* elements[], Relations relations){
 // print out the relations
 void print_Relation(Relations r){
     for(int i = 0; i < r->size; i ++){
-        printf("%s      ",r->name[i]);
+        char* y = r->name[i];
+        printf("%s      ",y);
     }
     printf("\n");
     HashTables y = r->hashTables[0];
