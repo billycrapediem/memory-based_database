@@ -128,7 +128,6 @@ void add(char* elements[], Relations relations){
     }
     // free the memories of finding Nodes's memory
     else{
-        print_Relation(relations);
         while(search != NULL){
             Nodes curNode = search;
             search = curNode->next[0];
@@ -151,7 +150,6 @@ void delete(char* elements[], Relations relations){
     Nodes container = lookup(elements,relations);
     // using lookup function we get a list of tuples that fits our requirement, and delete them in teh fucntion
     if( container == NULL){
-        print_Relation(relations);
         return;
     }
     while(container != NULL){
@@ -185,7 +183,6 @@ void delete(char* elements[], Relations relations){
         free_Tuple(curT);
         relations->tupleNum --;
     }
-    print_Relation(relations);
 }
 
 
@@ -279,16 +276,24 @@ void print_Relation(Relations r){
             cur = cur->next[0];
         }
     }
+    printf("\n\n");
 }
 
 // print out the nodes
 void print_Nodes(Nodes s, int size){
+    if(s == NULL){
+        printf("did not found the tuples in the relatiosn \n\n");
+        return;
+    }
     while(s != NULL){
+        Nodes cur = s;
         Tuples t = s->element;
         for(int i = 0; i < size; i ++){
             printf("%s      ",t->elements[i]);
         }
         printf("\n");
         s = s->next[0];
+        free_Nodes(cur);
     }
+    printf("\n\n");
 }
