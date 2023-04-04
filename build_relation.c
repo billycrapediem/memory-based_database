@@ -37,10 +37,12 @@ Relations new_TPN(){
     char *z3[] = {"Americans","61367","99"};
     char *z4[] = {"Maple Leafs","75196","7"};
     char *z5[] = {"Maple Leafs","20945","24"};
-    char *z6[] = {"Readwings","70513","10"};
-    char *z7[] = {"Crunch","512513","1"};
+    char *z6[] = {"Redwings","70513","10"};
+    char *z10[] = {"Redwings","20945","10"};
+    char *z7[] = {"Crunch","51213","1"};
     char *z8[] = {"Crunch","51213","9"};
     char *z9[] = {"Crunch","55870","13"};
+    add(z10,TPN);
     add(z1,TPN);
     add(z2,TPN);
     add(z3,TPN);
