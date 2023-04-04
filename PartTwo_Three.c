@@ -215,9 +215,18 @@ Relations Union(Relations x, Relations y){
     for(int i = 0; i < htx->size; i++){
         Nodes cur = htx->array[i];
         while(cur != NULL){
-            if(lookup(cur->element->elements,y)==NULL){
+            Nodes z = lookup(cur->element->elements,y);
+            if(z==NULL){
                 add(cur->element->elements,new);
             }
+            else{
+                while(z != NULL){
+                    Nodes curNode = z;
+                    z = z->next[0];
+                    free_Nodes(curNode);
+                }
+            }
+
             cur = cur->next[0];
         }
     }
@@ -281,7 +290,7 @@ Relations Difference(Relations x, Relations y){
 Relations  Selections(int pos, char* name, Relations r){
     char* a[r->size];
     for(int i = 0; i < r->size; i++){
-        if(i == pos - 1){
+        if(i == pos){
             a[i] = name;
         }
         else{
@@ -303,26 +312,38 @@ Relations  Selections(int pos, char* name, Relations r){
     return ans;
 }
 
-Relations Projections(const int* pos, Relations x,int size){
-    char* name[size];
-    for(int i = 0; i < size; i ++){
-        name[i] = x->name[pos[i]-1];
+Relations Projections(const int* pos, Relations x,int size) {
+    char** name = (char**) calloc(size, sizeof(char*));
+    for(int i = 0; i < size; i++){
+        char* z = x->name[pos[i]];
+        name[i] = z;
     }
-    Relations ans = new_Relation(size,name);
-    HashTables tables = x->hashTables[0];
-    for(int i = 0; i < tables->size; i++){
-        Nodes arrayNode = tables->array[i];
-        while(arrayNode != NULL){
-            Tuples curT = arrayNode->element;
-            char* tuples[size];
-            for(int j = 0; j < size; j++){
-                tuples[j] = curT->elements[pos[j]-1];
-            }
-            add(tuples,ans);
-            arrayNode = arrayNode->next[0];
+    Relations result = new_Relation(size,name);
+
+    // create a new array to store the positions of the projected columns
+    char* projPos[x->size];
+    for (int i = 0; i < x->size; i++) {
+        projPos[i] = "";
+    }
+    // iterate over the tuples in the original relation
+    Nodes tuples = lookup(projPos, x);
+    while (tuples != NULL) {
+        Tuples tuple = tuples->element;
+        Nodes curNode = tuples;
+
+        // create a new tuple with only the projected columns
+        char* newChar[size];
+        for (int i = 0; i < size; i++) {
+            newChar[i]= tuple->elements[pos[i]];
         }
+        // add the new tuple to the resulting relation
+        add(newChar, result);
+        tuples = tuples->next[0];
+        free_Nodes(curNode);
     }
-    return ans;
+    free(name);
+    // free memory and return the resulting relation
+    return result;
 }
 
 Relations Join(Relations x, Relations y, int pos1, int pos2){
@@ -355,6 +376,7 @@ Relations Join(Relations x, Relations y, int pos1, int pos2){
             }
             Nodes lookupNode = lookup(forLookup,y);
             while(lookupNode != NULL){
+                 Nodes curNode = lookupNode;
                 for (int h = 0; h < x->size; h++) {
                     element[h] = cur->element->elements[h];
                 }
@@ -369,9 +391,13 @@ Relations Join(Relations x, Relations y, int pos1, int pos2){
                 }
                 add(element,new);
                 lookupNode = lookupNode->next[0];
+                free_Nodes(curNode);
             }
             cur = cur->next[0];
         }
     }
+    free(element);
+    free(forLookup);
+    free(newName);
     return new;
 }
