@@ -9,44 +9,35 @@ int main() {
     Relations GHVD = new_GHVD();
     Relations TC = new_TC();
     Relations GPG = new_GPG();
-
-    /*
-    print_Relation(TPN);
-    print_Relation(GHVD);
-    print_Relation(PIB);
-    print_Relation(TC);
-    print_Relation(GPG);
-     */
-
     // testing for part One
     printf("testing for function in part One: \n");
 
-    printf("operation a\n");
+    printf("lookup(⟨“Americans”,61367,99⟩,Team-PlayerId-Number)\n");
     char* a[] = {"Americans","61367","99"};
     print_Nodes(lookup(a,TPN),TPN->size);
-    printf("operation b\n");
+    printf("lookup(⟨“Crunch”,51213,∗⟩,Team-PlayerId-Number)\n");
     char* b[] = {"Crunch","51213",""};
     print_Nodes(lookup(b,TPN),TPN->size);
-    printf("operation c\n");
+    printf("lookup (⟨“Americans”, “Toronto”⟩, Team-City)\n");
     char* c[] = {"Americans","Toronto",};
     print_Nodes(lookup(c,TC),TC->size);
-    printf("operation d\n");
+    printf("delete (⟨“Redwings”, “Maple Leafs”, “6 Jan 2023”⟩, GameId-HomeTeam-AwayTeam-Date)\n");
     char* d[] = {"","Redwings","Maple Leafs","6 Jan 2023"};
     delete(d,GHVD);
     print_Relation(GHVD);
-    printf("operation e\n");
+    printf("delete (⟨“Redwings”, “Crunch”, ∗⟩, GameId-HomeTeam-AwayTeam-Date)e\n");
     char* e[] = {"","Redwings","Crunch",""};
     delete(e,GHVD);
     print_Relation(GHVD);
-    printf("operation f\n");
+    printf("delete (⟨“Americans”, ∗, ∗⟩, GameId-HomeTeam-AwayTeam-Date) f\n");
     char* f[] = {"","Americans","",""};
     delete(f,GHVD);
     print_Relation(GHVD);
-    printf("operation g\n");
+    printf("insert(⟨“Ice Pilots”,“Pensacola”⟩,Team-City)\n");
     char* g[] = {"Ice Pilots","Pensacola"};
     add(g,TC);
     print_Relation(TC);
-    printf("operation h\n");
+    printf("insert(⟨“Crunch”,“Syracuse”⟩,Team-City)\n");
     char* h[] = {"Crunch","Syracuse"};
     add(h,TC);
     print_Relation(TC);
@@ -63,41 +54,44 @@ int main() {
     Navigation_One_test(PIB1, TPN1);
     printf("How many goals did Name score on Date?\n");
     Navigation_Two_test(PIB1,GHVD1,GPG1);
+
     // testing for part Three
     printf("\ntesting for part three\n");
     Relations PIB2 = new_PIB();
-    char* zz[] = {"1111","2222","3333"};
+    char* zz[] = {"1111","B Zhang","7 Jan 2001"};
     add(zz,PIB2);
     char *y1[] = {"75196","A.Moore","28 AUG 1985"};
     delete(y1,PIB2);
-    printf("\ntesting for selection\n");
+    Relations intersection = Intersection(PIB,PIB2);
+    printf("testing for itersection\n");
+    print_Relation(intersection);
+    Relations difference = Difference(PIB2, PIB);
+    printf("testing for Difference\n");
+    print_Relation(difference);
+    Relations combine = Union(PIB2, PIB);
+    printf("testing for Union\n");
+    print_Relation(combine);
+
+    printf("testing for Selection\n");
     Relations selection = Selections(0,"51213",PIB1);
     int array[] = {0};
-    Relations projection = Projections(array,selection,1);
     print_Relation(selection);
+    printf("testing for projection\n");
+    Relations projection = Projections(array,selection,1);
     print_Relation(projection);
-    Relations intersection = Intersection(PIB,PIB2);
-    Relations difference = Difference(PIB2, PIB);
-    Relations combine = Union(PIB2, PIB);
+
     Relations join = Join(GHVD1,GPG1,0,0);
-    printf("join testing \n");
+    printf("testing for Join \n");
     print_Relation(join);
     // 4
+    printf("all three combine\n");
     int arrayx[] = {4,5};
-    Relations test = Projections(arrayx, Selections(3,"8 Jan 2023", join),2);
+    Relations test_selection = Selections(3,"8 Jan 2023", join);
+    Relations test = Projections(arrayx,test_selection ,2);
     print_Relation(test);
 
-
-    /*
-    print_Relation(combine);
-    print_Relation(difference);
-    print_Relation(projection);
-    print_Relation(intersection);
-     */
-
-
-
-    //freeing created relations
+    //free created relations
+    free_Relations(test_selection);
     free_Relations(test);
     free_Relations(combine);
     free_Relations(join);

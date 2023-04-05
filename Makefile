@@ -10,8 +10,8 @@ main:
 	gcc $(CFLAGS) main.c relations.c build_relation.c PartTwo_Three.c -o main
 	leaks --atExit --groupByType -- ./main
 	-rm $(PROGRAMS)
-bits:
-	gcc $(CFLAGS)
+project:
+	gcc $(CFLAGS) main.c relations.c build_relation.c PartTwo_Three.c -o main
 clean:
 	-rm $(PROGRAMS)
 

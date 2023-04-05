@@ -14,7 +14,7 @@ Relations new_PIB(){
     char *y6[] = {"70513","G.King","13 Apr 1993"};
     char *y7[] = {"51213","T.Sullivan","13 Apr 1993"};
     char *y4[] = {"61367","A.Moore","18 Mar 2000"};
-    char *a2[] = {"55879","D.Hernandez","25 Jul 1997"};
+    char *a2[] = {"55870","D.Hernandez","25 Jul 1997"};
     char *a3[] = {"47087","W.Stewart","5 Jan 1994"};
     char *y8[] = {"39468","G.Jones","5 Jan 1993"};
     add(y1,PIB);

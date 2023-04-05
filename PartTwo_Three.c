@@ -64,7 +64,7 @@ void Navigation_One_test(Relations PIB, Relations TPN){
         }
         Nodes outcome = Find_Number_Name_Team(name, team, PIB, TPN);
         if(outcome == NULL){
-            printf("did not found correspond player");
+            printf("did not find correspond player");
         }
         while(outcome != NULL){
             Nodes curNode = outcome;
@@ -167,7 +167,7 @@ void Navigation_Two_test(Relations PIB, Relations GHVD, Relations GPG ){
         }
         Nodes outcome = Find_GOAL_Date_Name(PIB, GHVD,GPG, name, date);
         if(outcome == NULL){
-            printf("did not found correspond player playing on the date");
+            printf("did not find correspond player playing on the date");
         }
         while(outcome != NULL){
             Nodes curNode = outcome;
@@ -287,6 +287,7 @@ Relations Difference(Relations x, Relations y){
 }
 
 // selections
+/*
 Relations  Selections(int pos, char* name, Relations r){
     char* a[r->size];
     for(int i = 0; i < r->size; i++){
@@ -310,6 +311,30 @@ Relations  Selections(int pos, char* name, Relations r){
         free_Nodes(curNode);
     }
     return ans;
+}
+ */
+Relations Selections(int pos, char* name, Relations x) {
+    Relations result = new_Relation(x->size,x->name);
+    // create a new array to store the positions of the selected columns
+    char** selPos = (char**)malloc((x->size ) * sizeof(char*));
+    //char* condition[x->size];
+    for (int i = 0; i < x->size; i++) {
+        selPos[i] = "";
+    }
+    selPos[pos] = name;
+    // iterate over the tuples in the original relation
+    Nodes tuples = lookup(selPos, x);
+    while (tuples != NULL) {
+        Nodes curNode = tuples;
+        Tuples tuple = tuples->element;
+        // add the tuple to the resulting relation
+        add(tuple->elements, result);
+        tuples = tuples->next[0];
+        free_Nodes(curNode);
+    }
+    // free memory and return the resulting relation
+    free(selPos);
+    return result;
 }
 
 Relations Projections(const int* pos, Relations x,int size) {
