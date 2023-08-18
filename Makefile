@@ -1,6 +1,6 @@
 
 
-CFLAGS = -std=c99 -pedantic -Wall -Werror
+CFLAGS = -std=c99
 
 PROGRAMS = main
 

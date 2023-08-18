@@ -73,7 +73,7 @@ int main() {
     print_Relation(combine);
 
     printf("testing for Selection\n");
-    Relations selection = Selections(0,"51213",PIB1);
+    Relations selection = Selections(1,"51213",TPN1);
     int array[] = {0};
     print_Relation(selection);
     printf("testing for projection\n");

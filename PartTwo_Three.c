@@ -287,32 +287,6 @@ Relations Difference(Relations x, Relations y){
 }
 
 // selections
-/*
-Relations  Selections(int pos, char* name, Relations r){
-    char* a[r->size];
-    for(int i = 0; i < r->size; i++){
-        if(i == pos){
-            a[i] = name;
-        }
-        else{
-            a[i] = "";
-        }
-    }
-    Relations ans = new_Relation(r->size,r->name);
-    Nodes find = lookup(a,r);
-    while(find != NULL){
-        Nodes curNode = find;
-        find = find->next[0];
-        char* curString[r->size];
-        for(int i = 0; i < r->size; i++){
-            curString[i] = curNode->element->elements[i];
-        }
-        add(curString,ans);
-        free_Nodes(curNode);
-    }
-    return ans;
-}
- */
 Relations Selections(int pos, char* name, Relations x) {
     Relations result = new_Relation(x->size,x->name);
     // create a new array to store the positions of the selected columns
