@@ -2,7 +2,7 @@
 // Created by Bryan Zhang on 3/23/23.
 //
 
-#ifndef CSC173_PROJECT4_RELATIONS_H
+#ifndef MEMORY_BASE_DATABASE_RELATIONS_H
 
 typedef struct Tuple* Tuples;
 typedef struct Node* Nodes;
@@ -40,6 +40,6 @@ extern Nodes lookup(char* element[],Relations r);
 extern void print_Nodes(Nodes n,int x);
 extern void free_Relations(Relations x);
 extern void delete(char* elements[], Relations relations);
-#define CSC173_PROJECT4_RELATIONS_H
+#define MEMORY_BASE_DATABASE_RELATIONS_H
 
-#endif //CSC173_PROJECT4_RELATIONS_H
+#endif //MEMORY_BASE_DATABASE_RELATIONS_H
